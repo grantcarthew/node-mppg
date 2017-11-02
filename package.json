@@ -1,0 +1,35 @@
+{
+  "name": "mppg",
+  "version": "1.0.0",
+  "description": "Materialized Path Pattern Generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grantcarthew/node-mppg.git"
+  },
+  "keywords": [
+    "Materialized",
+    "Path",
+    "Pattern",
+    "Generator",
+    "Tree",
+    "Hierarchy",
+    "SQL",
+    "String"
+  ],
+  "author": "Grant Carthew",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/grantcarthew/node-mppg/issues"
+  },
+  "homepage": "https://github.com/grantcarthew/node-mppg#readme",
+  "devDependencies": {
+    "standard": "^10.0.3"
+  },
+  "standard": {
+    "globals": ["test", "expect"]
+  }
+}
