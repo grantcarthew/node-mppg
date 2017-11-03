@@ -4,7 +4,8 @@
   "description": "Materialized Path Pattern Generator",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "watch": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -27,9 +28,13 @@
   },
   "homepage": "https://github.com/grantcarthew/node-mppg#readme",
   "devDependencies": {
+    "jest": "^21.2.1",
     "standard": "^10.0.3"
   },
   "standard": {
-    "globals": ["test", "expect"]
+    "globals": [
+      "test",
+      "expect"
+    ]
   }
 }
