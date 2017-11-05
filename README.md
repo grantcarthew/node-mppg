@@ -11,7 +11,7 @@ Materialized Path Pattern Generator - Trees in SQL databases
 
 [![NPM][nodei-npm-image]][nodei-npm-url]
 
-> The Materialized Paths pattern stores each tree node in a table; in addition to the tree node, each row stores as a string the id(s) of the node’s ancestors or path. Although the Materialized Paths pattern requires additional steps of working with strings and regular expressions, the pattern also provides more flexibility in working with the path, such as finding nodes by partial paths.
+The Materialized Paths pattern stores each tree node in a table; in addition to the tree node, each row stores as a string the id(s) of the node’s ancestors or path. Although the Materialized Paths pattern requires additional steps of working with strings and regular expressions, the pattern also provides more flexibility in working with the path, such as finding nodes by partial paths.
 
 ## Rational
 
