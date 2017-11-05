@@ -70,6 +70,10 @@ console.log(mppg.getChildId(mpath))
 
 See the jsDoc notes in the [index.js](/index.js) file.
 
+## Change Log
+
+- v1.0.0 [2017-11-05]: Initial release. 
+
 [bithound-overall-image]: https://www.bithound.io/github/grantcarthew/node-mppg/badges/score.svg
 [bithound-overall-url]: https://www.bithound.io/github/grantcarthew/node-mppg
 [bithound-dep-image]: https://www.bithound.io/github/grantcarthew/node-mppg/badges/dependencies.svg
