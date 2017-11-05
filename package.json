@@ -1,6 +1,6 @@
 {
   "name": "mppg",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Materialized Path Pattern Generator",
   "main": "index.js",
   "scripts": {
