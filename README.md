@@ -11,21 +11,11 @@ Materialized Path Pattern Generator - Trees in SQL databases
 
 [![NPM][nodei-npm-image]][nodei-npm-url]
 
-The Materialized Paths pattern stores each tree node in a table; in addition to the tree node, each row stores as a string the id(s) of the node’s ancestors or path. Although the Materialized Paths pattern requires additional steps of working with strings and regular expressions, the pattern also provides more flexibility in working with the path, such as finding nodes by partial paths.
-
-## Rational
-
-After researching how to store hierarcical data in an SQL database I discovered there are [many different methods](https://stackoverflow.com/questions/4048151/what-are-the-options-for-storing-hierarchical-data-in-a-relational-database) available.
-
-For my project's use case I decided that the Materialized Path, also known as Lineage Column or Path Enumeration, was the best fit. I was surprised to have difficulty finding a Node.js package to help manage the path ids.
-
-I wrote this module to help manage the materialized paths based in some part on a [blog article](https://bojanz.wordpress.com/2014/04/25/storing-hierarchical-data-materialized-path/) by Bojan Živanović.
-
-I am not compressing the path ids by removing the leading zeros because disk is cheap and it is easier to read the paths. I may add this feature in the future.
+The Materialized Paths pattern is a simple method to store tree or hierarchical data into a flat data store. It stores each tree node in a table; in addition to the tree node, each row stores as a string the id(s) of the node’s ancestors or path. Although the Materialized Paths pattern requires additional steps of working with strings and regular expressions, the pattern also provides more flexibility in working with the path, such as finding nodes by partial paths.
 
 ## Installing
 
-mppg is not being transpiled. I have not tested which versions of Node.js the package will work on.
+Please note that `mppg` is not being transpiled. I have not tested which versions of Node.js the package will work on. Feel free to contribute this information back to the community.
 
 ```sh
 npm install mppg
@@ -65,6 +55,26 @@ console.log(mppg.getParentId(mpath))
 console.log(mppg.getChildId(mpath))
 // '00001' <= The last id in the chain.
 ```
+
+## Rational
+
+After researching how to store hierarcical data in an SQL database I discovered there are [many different methods](https://stackoverflow.com/questions/4048151/what-are-the-options-for-storing-hierarchical-data-in-a-relational-database) available.
+
+For my project's use case I decided that the Materialized Path, also known as Lineage Column or Path Enumeration, was the best fit. I was surprised to have difficulty finding a Node.js package to help manage the path ids.
+
+I wrote this module to help manage the materialized paths based in some part on a [blog article](https://bojanz.wordpress.com/2014/04/25/storing-hierarchical-data-materialized-path/) by Bojan Živanović.
+
+I am not compressing the path ids by removing the leading zeros because disk is cheap and it is easier to read the paths. I may add this feature in the future.
+
+## Function
+
+The `mppg` package uses Base36 encoding to create the path identifiers. Read more about [Base36 encoding on Wikipedia](https://en.wikipedia.org/wiki/Base36). By using Base36 encoding the path identifiers can support far more nodes than if only using decimal digits. Also, the strings produced by the Base36 encoding will sort in node order straight from the database.
+
+You can control the size of the identifiers used for `mppg` by setting the constructor option `idLength`. Setting the `idLength` value to 3 will produce path ids of `001`. If you set the `idLength` to 6 you will get path identifiers of `000001`.
+
+As an example using a `String` or 255 character field in a database, if you set the `idLength` constructor option to five digits, the maximum number of sibling identifiers will be 60,466,175 with a maximum depth of 50. Plenty to support a comment hierarcy or product catalog.
+
+Rather than worry about managing the identifier numbers and converting to Base36, all identifiers in `mppg` are already in Base36 format.
 
 ## API
 
