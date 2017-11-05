@@ -20,7 +20,9 @@
     "Tree",
     "Hierarchy",
     "SQL",
-    "String"
+    "String",
+    "Lineage",
+    "Enumeration"
   ],
   "author": "Grant Carthew",
   "license": "MIT",
