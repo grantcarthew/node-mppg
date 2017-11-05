@@ -68,7 +68,7 @@ console.log(mppg.getChildId(mpath))
 
 ## API
 
-See the jsDoc notes in the index.js file.
+See the jsDoc notes in the [index.js](/index.js) file.
 
 [bithound-overall-image]: https://www.bithound.io/github/grantcarthew/node-mppg/badges/score.svg
 [bithound-overall-url]: https://www.bithound.io/github/grantcarthew/node-mppg
