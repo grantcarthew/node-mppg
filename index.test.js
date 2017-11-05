@@ -71,6 +71,10 @@ test('getPathLength', () => {
   expect(() => { mppg.getPathLength('123ABC') }).toThrow(mgs.invalidPathLength)
 })
 
+test('getRootId', () => {
+  expect(mppg.getRootId()).toBe(firstId)
+})
+
 test('getNextId', () => {
   expect(mppg.getNextId(firstId)).toBe('00002')
   expect(mppg.getNextId(midId)).toBe(midp1Id)

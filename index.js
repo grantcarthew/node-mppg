@@ -254,6 +254,16 @@ class MPPG {
   }
 
   /**
+   * Returns the lowest id value.
+   *
+   * @returns {string}
+   * @memberof MPPG
+   */
+  getRootId () {
+    return this.minId
+  }
+
+  /**
    * Given one path id it will return the next path id in sequence.
    *
    * @param {string} pathId
