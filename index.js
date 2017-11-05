@@ -1,70 +1,183 @@
+// @ts-check
+
+/**
+ * Simple type checking class.
+ *
+ * @class Is
+ */
 class Is {
+  /**
+   * Returns true if value is a string.
+   *
+   * @param {any} value
+   * @returns {boolean}
+   * @memberof Is
+   */
   string (value) {
     return Object.prototype.toString.call(value) === '[object String]'
   }
 
+  /**
+   * Returns true if value is a number.
+   *
+   * @param {any} value
+   * @returns {boolean}
+   * @memberof Is
+   */
   number (value) {
     return Object.prototype.toString.call(value) === '[object Number]'
   }
 
+  /**
+   * Returns true if value is not a number.
+   *
+   * @param {any} value
+   * @returns {boolean}
+   * @memberof Is
+   */
   nan (value) {
     return Number.isNaN(value)
   }
 
+  /**
+   * Returns true if value is an integer.
+   *
+   * @param {any} value
+   * @returns {boolean}
+   * @memberof Is
+   */
   integer (value) {
     return this.number(value) && !this.nan(value) && value % 1 === 0
   }
 
+  /**
+   * Returns true if value only contains alphnumeric characters.
+   *
+   * @param {any} value
+   * @returns {boolean}
+   * @memberof Is
+   */
   alphaNum (value) {
     return value.match(/[^0-9a-z]/i) === null
   }
+
+  /**
+   * returns true if value is an empty string.
+   *
+   * @param {any} value
+   * @returns {boolean}
+   * @memberof Is
+   */
+  emptyString (value) {
+    return this.string(value) && value === ''
+  }
 }
 
+/**
+ * Materialized Path Pattern Generator Error
+ *
+ * @class MppgError
+ * @extends {Error}
+ */
 class MppgError extends Error {
+  /**
+   * Creates an instance of MppgError.
+   * @param {any} params
+   * @memberof MppgError
+   */
   constructor (...params) {
     super(...params)
     Error.captureStackTrace(this, MppgError)
     this.date = new Date()
   }
+
+  /**
+   * Helper function to throw the MppgError exception.
+   *
+   * @static
+   * @param {any} params
+   * @memberof MppgError
+   */
   static throw (...params) {
     throw new MppgError(...params)
   }
+
+  /**
+   * Returns a frozen object with the MppgError messages as properties.
+   *
+   * @readonly
+   * @static
+   * @memberof MppgError
+   */
   static get messages () {
     return Object.freeze({
+      invalidIdLength: 'The idLength options must be a positive integer.',
       invalidChr: 'Invalid characters in the path or id string. Only 0-9 and A-Z allowed.',
-      invalidPathLength: 'Path length not related to pad length.',
+      invalidPathLength: 'Path length not related to id length.',
       intNan: 'Path id is not a number (NaN).',
-      intMax: 'Path id value is greater than the maximum permitted with the current padLength.',
+      intMax: 'Path id value is greater than the maximum permitted with the current idLength.',
       pathIdMin: 'Path id value is zero which is below the starting value of one.',
       noParent: 'Path id does not have a parent.'
-
     })
   }
 }
 
+/**
+ * Materialized Path Pattern Generator
+ *
+ * @class MPPG
+ */
 class MPPG {
-  constructor (options) {
-    this.padLength = options.padLength
+  /**
+   * Creates an instance of MPPG.
+   * @param {number} idLength
+   * @throws {MppgError} The idLength options must be a positive integer.
+   * @memberof MPPG
+   */
+  constructor ({idLength}) {
+    this.is = new Is()
+    this.MppgError = MppgError
+    this.is.integer(idLength) &&
+      idLength < 2 &&
+      this.MppgError.throw(MppgError.messages.invalidIdLength)
+    this.idLength = idLength
     this.minChr = '0'
     this.maxChr = 'Z'
-    this.is = new Is()
-    this.errId = this.minChr.padStart(this.padLength, this.minChr)
-    this.minId = '1'.padStart(this.padLength, this.minChr)
-    this.maxId = this.maxChr.padStart(this.padLength, this.maxChr)
+    this.errId = this.minChr.padStart(this.idLength, this.minChr)
+    this.minId = '1'.padStart(this.idLength, this.minChr)
+    this.maxId = this.maxChr.padStart(this.idLength, this.maxChr)
     this.maxInt = this.fromBase36(this.maxId)
-    this.MppgError = MppgError
   }
 
-  cleanStr (strValue, checkLength = true) {
+  /**
+   * Replaces null values with empty string.
+   * Checks for valid string.
+   * Checks for only alphanumeric characters.
+   *
+   * @param {string} strValue
+   * @returns {string}
+   * @throws {MppgError} Invalid characters in the path or id string. Only 0-9 and A-Z allowed.
+   * @memberof MPPG
+   */
+  cleanStr (strValue) {
     strValue = strValue || ''
     strValue = this.is.string(strValue) ? strValue : strValue.toString()
-    this.is.alphaNum(strValue) || MppgError.throw(MppgError.messages.invalidChr, strValue)
-    checkLength &&
-      strValue.length % this.padLength !== 0 &&
-      MppgError.throw(MppgError.messages.invalidPathLength)
+    this.is.alphaNum(strValue) || MppgError.throw(MppgError.messages.invalidChr)
     return strValue.toUpperCase()
   }
 
+  /**
+   * If intValue is not an int it is converted to an int.
+   * Checks for NaN values.
+   * Gets the absolute value of the intValue.
+   * Checks the intValue is below the maximum allowable value.
+   *
+   * @param {number} intValue
+   * @returns {number}
+   * @throws {MppgError} Path id is not a number (NaN).
+   * @throws {MppgError} Path id value is greater than the maximum permitted with the current idLength.
+   * @memberof MPPG
+   */
   cleanInt (intValue) {
     intValue = this.is.integer(intValue) ? intValue : parseInt(intValue)
     this.is.nan(intValue) && MppgError.throw(MppgError.messages.intNan)
@@ -73,63 +186,173 @@ class MPPG {
     return intValue
   }
 
+  /**
+   * Throws an exception if the path length is not valid.
+   * Valid path lengths are one or more multiples of idLength.
+   *
+   * @param {string} mpath
+   * @throws {MppgError} Path length not related to id length.
+   * @memberof MPPG
+   */
+  testPathLength (mpath) {
+    mpath = mpath || ''
+    let valid = true
+    mpath.length < this.idLength && (valid = false)
+    mpath.length % this.idLength !== 0 && (valid = false)
+    valid || MppgError.throw(MppgError.messages.invalidPathLength)
+  }
+
+  /**
+   * Returns true if the mpath length is two or more times the length of idLength.
+   *
+   * @param {string} mpath
+   * @returns {boolean}
+   * @memberof MPPG
+   */
+  testPathHasParent (mpath) {
+    mpath = this.cleanStr(mpath)
+    this.testPathLength(mpath)
+    return mpath.length >= (2 * this.idLength)
+  }
+
+  /**
+   * Converts the int value into a base36 string.
+   *
+   * @param {number} intValue
+   * @returns {string}
+   * @memberof MPPG
+   */
   toBase36 (intValue) {
     intValue = this.cleanInt(intValue)
     return intValue.toString(36).toUpperCase()
   }
 
+  /**
+   * Converts a base36 string into a number.
+   *
+   * @param {string} strValue
+   * @returns {number}
+   * @memberof MPPG
+   */
   fromBase36 (strValue) {
-    strValue = this.cleanStr(strValue, false)
+    strValue = this.cleanStr(strValue)
     return parseInt(strValue, 36)
   }
 
-  getPathLength (path) {
-    this.cleanStr(path)
-    return path.length === 0 ? 0 : path.length / this.padLength
+  /**
+   * Returns a number based on the multiples of idLength.
+   * If the idLength is 3 and the mpath is 9 then this function will return 3.
+   *
+   * @param {string} mpath
+   * @returns {number}
+   * @memberof MPPG
+   */
+  getPathLength (mpath) {
+    this.cleanStr(mpath)
+    this.testPathLength(mpath)
+    return mpath.length === 0 ? 0 : mpath.length / this.idLength
   }
 
-  testPathHasParent (mpath) {
-    mpath = this.cleanStr(mpath)
-    return mpath.length >= (2 * this.padLength)
-  }
-
+  /**
+   * Given one path id it will return the next path id in sequence.
+   *
+   * @param {string} pathId
+   * @returns {string}
+   * @memberof MPPG
+   */
   getNextId (pathId) {
     pathId = pathId ? this.fromBase36(pathId) : 0
     pathId = this.toBase36(++pathId)
-    pathId = pathId.padStart(this.padLength, this.minChr)
+    pathId = pathId.padStart(this.idLength, this.minChr)
     return pathId
   }
 
+  /**
+   * Given one path id it will return the previous id value.
+   *
+   * @param {string} pathId
+   * @returns {string}
+   * @throws {MppgError} Path id value is zero which is below the starting value of one.
+   * @memberof MPPG
+   */
   getPreviousId (pathId) {
     pathId = this.fromBase36(pathId)
     pathId = this.toBase36(--pathId)
-    pathId = pathId.padStart(this.padLength, this.minChr)
+    pathId = pathId.padStart(this.idLength, this.minChr)
     pathId === this.errId && MppgError.throw(MppgError.messages.pathIdMin)
     return pathId
   }
 
+  /**
+   * Returns the parent path from a given child path.
+   *
+   * @param {string} mpath
+   * @returns {string}
+   * @throws {MppgError} Path id does not have a parent.
+   * @memberof MPPG
+   */
   getParentId (mpath) {
     mpath = this.cleanStr(mpath)
-    let twoPad = this.padLength * 2
-    mpath.length < twoPad && MppgError.throw(MppgError.messages.noParent)
-    return mpath.slice(-twoPad, -this.padLength)
+    this.testPathLength(mpath)
+    let twoId = this.idLength * 2
+    mpath.length < twoId && MppgError.throw(MppgError.messages.noParent)
+    return mpath.slice(-twoId, -this.idLength)
   }
 
+  /**
+   * Appends a new child id to the given parent path.
+   *
+   * @param {string} mpath
+   * @returns {string}
+   * @memberof MPPG
+   */
   getChildId (mpath) {
     mpath = this.cleanStr(mpath)
-    mpath = mpath.length < this.padLength ? this.minId : mpath
-    if (mpath.length === this.padLength) { return mpath }
-    return mpath.slice(-this.padLength)
+    this.testPathLength(mpath)
+    mpath = mpath.length < this.idLength ? this.minId : mpath
+    if (mpath.length === this.idLength) { return mpath }
+    return mpath.slice(-this.idLength)
   }
 
-  getNextChildPath (mpath) {
+  /**
+   * Returns the parent path from the given path.
+   *
+   * @param {string} mpath
+   * @returns {string}
+   * @throws {MppgError} Path id does not have a parent.
+   * @memberof MPPG
+   */
+  getParentPath (mpath) {
     mpath = this.cleanStr(mpath)
-    return mpath + this.minId
+    this.testPathLength(mpath)
+    mpath.length < (2 * this.idLength) && MppgError.throw(MppgError.messages.noParent)
+    return mpath.slice(0, -this.idLength)
   }
 
+  /**
+   * Returns the next sibling path based on the provided path.
+   *
+   * @param {string} mpath
+   * @returns {string}
+   * @memberof MPPG
+   */
   getNextSibligPath (mpath) {
     mpath = this.cleanStr(mpath)
-    if (mpath.length === this.padLength) { return }
+    this.testPathLength(mpath)
+    if (mpath.length === this.idLength) { return this.getNextId(mpath) }
+  }
+
+  /**
+   * Returns the next child path by appending the first path id onto the provided path.
+   *
+   * @param {string} mpath
+   * @returns {string}
+   * @memberof MPPG
+   */
+  getNextChildPath (mpath) {
+    mpath = this.cleanStr(mpath)
+    this.is.emptyString(mpath) || this.testPathLength(mpath)
+    return mpath + this.minId
   }
 }
 

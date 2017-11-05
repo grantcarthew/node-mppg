@@ -1,5 +1,5 @@
 const MPPG = require('./index')
-const mppg = new MPPG({padLength: 5})
+const mppg = new MPPG({idLength: 5})
 const mgs = mppg.MppgError.messages
 const lastId = 'ZZZZZ'
 const midId = 'X23GP'
@@ -8,12 +8,22 @@ const midm1Id = 'X23GO'
 const firstId = '00001'
 const maxInt = 60466175
 
+test('constructor', () => {
+  /* eslint-disable no-new */
+  expect(() => { new MPPG({idLength: 0}) }).toThrow(mgs.invalidIdLength)
+  expect(() => { new MPPG({idLength: 1}) }).toThrow(mgs.invalidIdLength)
+  /* eslint-enable no-new */
+  expect(new MPPG({idLength: 2})).toBeInstanceOf(MPPG)
+  expect(new MPPG({idLength: 3})).toBeInstanceOf(MPPG)
+  expect(new MPPG({idLength: 4})).toBeInstanceOf(MPPG)
+})
+
 test('cleanStr', () => {
+  expect(() => { mppg.cleanStr('abc#123') }).toThrow(mgs.invalidChr)
   expect(mppg.cleanStr()).toBe('')
   expect(mppg.cleanStr(12345)).toBe('12345')
   expect(mppg.cleanStr('abc12')).toBe('ABC12')
-  expect(() => { mppg.cleanStr('abc123') }).toThrow(mgs.invalidPathLength)
-  expect(mppg.cleanStr('abc123', false)).toBe('ABC123')
+  expect(mppg.cleanStr('abc123')).toBe('ABC123')
 })
 
 test('cleanInt', () => {
@@ -24,6 +34,23 @@ test('cleanInt', () => {
   expect(mppg.cleanInt('123abc')).toBe(123)
   expect(mppg.cleanInt(123.456)).toBe(123)
   expect(() => { mppg.cleanInt('#%4kjd') }).toThrow(mgs.intNan)
+})
+
+test('testPathLength', () => {
+  expect(() => { mppg.testPathLength() }).toThrow(mgs.invalidPathLength)
+  expect(() => { mppg.testPathLength('abc') }).toThrow(mgs.invalidPathLength)
+  expect(() => { mppg.testPathLength(firstId) }).not.toThrow()
+  expect(() => { mppg.testPathLength(firstId + 'abc') }).toThrow(mgs.invalidPathLength)
+  expect(() => { mppg.testPathLength(firstId + midId) }).not.toThrow()
+  expect(() => { mppg.testPathLength(firstId + midId + lastId) }).not.toThrow()
+  expect(() => { mppg.testPathLength(firstId + midId + lastId + 'abc') }).toThrow(mgs.invalidPathLength)
+})
+
+test('testPathHasParent', () => {
+  expect(() => { mppg.testPathHasParent() }).toThrow(mgs.invalidPathLength)
+  expect(mppg.testPathHasParent(firstId)).toBe(false)
+  expect(mppg.testPathHasParent(firstId + firstId)).toBe(true)
+  expect(mppg.testPathHasParent(firstId + firstId + firstId)).toBe(true)
 })
 
 test('fromBase36', () => {
@@ -44,13 +71,6 @@ test('getPathLength', () => {
   expect(() => { mppg.getPathLength('123ABC') }).toThrow(mgs.invalidPathLength)
 })
 
-test('testPathHasParent', () => {
-  expect(mppg.testPathHasParent()).toBe(false)
-  expect(mppg.testPathHasParent(firstId)).toBe(false)
-  expect(mppg.testPathHasParent(firstId + firstId)).toBe(true)
-  expect(mppg.testPathHasParent(firstId + firstId + firstId)).toBe(true)
-})
-
 test('getNextId', () => {
   expect(mppg.getNextId(firstId)).toBe('00002')
   expect(mppg.getNextId(midId)).toBe(midp1Id)
@@ -69,14 +89,26 @@ test('getParentId', () => {
   expect(mppg.getParentId(firstId + midId + lastId)).toBe(midId)
   expect(mppg.getParentId(firstId + midId)).toBe(firstId)
   expect(() => { mppg.getParentId(firstId) }).toThrow(mgs.noParent)
-  expect(() => { mppg.getParentId() }).toThrow(mgs.noParent)
+  expect(() => { mppg.getParentId() }).toThrow(mgs.invalidPathLength)
 })
 
 test('getChildId', () => {
-  expect(mppg.getChildId()).toBe(firstId)
+  expect(() => { mppg.getChildId() }).toThrow(mgs.invalidPathLength)
   expect(mppg.getChildId(firstId)).toBe(firstId)
   expect(mppg.getChildId(firstId + midId)).toBe(midId)
   expect(mppg.getChildId(firstId + midId + lastId)).toBe(lastId)
+})
+
+test('getParentPath', () => {
+  expect(() => { mppg.getParentPath() }).toThrow(mgs.invalidPathLength)
+  expect(() => { mppg.getParentPath(firstId) }).toThrow(mgs.noParent)
+  expect(mppg.getParentPath(firstId + midId)).toBe(firstId)
+  expect(mppg.getParentPath(firstId + midId + lastId)).toBe(firstId + midId)
+})
+
+test('getNextSiblingPath', () => {
+  expect(() => { mppg.getNextSibligPath() }).toThrow(mgs.invalidPathLength)
+  expect(mppg.getNextSibligPath(firstId)).toBe('00002')
 })
 
 test('getNextChildPath', () => {
