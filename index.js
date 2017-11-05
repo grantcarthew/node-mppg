@@ -179,7 +179,7 @@ class MPPG {
    * @memberof MPPG
    */
   cleanInt (intValue) {
-    intValue = this.is.integer(intValue) ? intValue : parseInt(intValue)
+    intValue = this.is.integer(intValue) ? intValue : parseInt(intValue, 10)
     this.is.nan(intValue) && MppgError.throw(MppgError.messages.intNan)
     intValue = Math.abs(intValue)
     intValue > this.maxInt && MppgError.throw(MppgError.messages.intMax)
