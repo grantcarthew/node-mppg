@@ -4,7 +4,7 @@ Materialized Path Pattern Generator - Trees in SQL databases
 
 [![bitHound Overall Score][bithound-overall-image]][bithound-overall-url]
 [![bitHound Dependencies][bithound-dep-image]][bithound-dep-url]
-[![Build Status][travisci-image]][travisci-url]
+<!-- [![Build Status][travisci-image]][travisci-url] -->
 [![js-standard-style][js-standard-image]][js-standard-url]
 [![NSP Status][nsp-image]][nsp-url]
 [![Patreon Donation][patreon-image]][patreon-url]
@@ -74,8 +74,8 @@ See the jsDoc notes in the index.js file.
 [bithound-overall-url]: https://www.bithound.io/github/grantcarthew/node-mppg
 [bithound-dep-image]: https://www.bithound.io/github/grantcarthew/node-mppg/badges/dependencies.svg
 [bithound-dep-url]: https://www.bithound.io/github/grantcarthew/node-mppg/master/dependencies/npm
-[travisci-image]: https://travis-ci.org/grantcarthew/node-mppg.svg?branch=master
-[travisci-url]: https://travis-ci.org/grantcarthew/node-mppg
+<!-- [travisci-image]: https://travis-ci.org/grantcarthew/node-mppg.svg?branch=master
+[travisci-url]: https://travis-ci.org/grantcarthew/node-mppg -->
 [js-standard-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
 [js-standard-url]: http://standardjs.com/
 [mppg-url]: https://github.com/grantcarthew/node-mppg
@@ -85,5 +85,5 @@ See the jsDoc notes in the index.js file.
 [nsp-url]: https://nodesecurity.io/orgs/openjs/projects/3871d340-0ca9-471c-be9a-39df3871262d
 [patreon-image]: https://img.shields.io/badge/patreon-donate-yellow.svg
 [patreon-url]: https://www.patreon.com/grantcarthew
-[nodei-npm-image]: https://nodei.co/npm/scalable-blob-store.png?downloads=true&downloadRank=true&stars=true
-[nodei-npm-url]: https://nodei.co/npm/scalable-blob-store/
+[nodei-npm-image]: https://nodei.co/npm/mppg.png?downloads=true&downloadRank=true&stars=true
+[nodei-npm-url]: https://nodei.co/npm/mppg/
