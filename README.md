@@ -39,22 +39,22 @@ const MPPG = require ('mppg')
 const mppg = new MPPG({idLength: 5})
 
 let mpath = mppg.getRootId()
-// path === '00001'
+// mpath === '00001'
 
 mpath = mppg.getNextSiblingPath(mpath)
-// id === '00002'
+// mpath === '00002'
 
 mpath = mppg.getNextChildPath(mpath)
-// id === '0000200001'
+// mpath === '0000200001'
 
 mpath = mppg.getNextSiblingPath(mpath)
-// id === '0000200002'
+// mpath === '0000200002'
 
 mpath = mppg.getNextSiblingPath(mpath)
-// id === '0000200003'
+// mpath === '0000200003'
 
 mpath = mppg.getNextChildPath(mpath)
-// id === '000020000300001'
+// mpath === '000020000300001'
 
 console.log(mppg.getPathLength(mpath))
 // 3
