@@ -44,7 +44,7 @@ let mpath = mppg.getRootId()
 mpath = mppg.getNextSiblingPath(mpath)
 // id === '00002'
 
-mpath = mppg.getNextSiblingPath(mpath)
+mpath = mppg.getNextChildPath(mpath)
 // id === '0000200001'
 
 mpath = mppg.getNextSiblingPath(mpath)
@@ -69,6 +69,28 @@ console.log(mppg.getChildId(mpath))
 ## API
 
 See the jsDoc notes in the [index.js](/index.js) file.
+
+## About the Owner
+
+I, Grant Carthew, am a technologist, trainer, and Dad from Queensland, Australia. I work on code in a number of personal projects and when the need arises I build my own packages.
+
+This project exists because I needed a local blob store that could scale.
+
+Everything I do in open source is done in my own time and as a contribution to the open source community.
+
+If you are using my projects and would like to thank me or support me, please click the Patreon link below.
+
+[![Patreon Donation][patreon-image]][patreon-url]
+
+See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
+
+## Contributing
+
+1.  Fork it!
+2.  Create your feature branch: `git checkout -b my-new-feature`
+3.  Commit your changes: `git commit -am 'Add some feature'`
+4.  Push to the branch: `git push origin my-new-feature`
+5.  Submit a pull request :D
 
 ## Change Log
 
