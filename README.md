@@ -95,6 +95,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 ## Change Log
 
 - v1.0.0 [2017-11-05]: Initial release. 
+- v1.0.1 [2017-11-05]: Documentation update. 
 
 [bithound-overall-image]: https://www.bithound.io/github/grantcarthew/node-mppg/badges/score.svg
 [bithound-overall-url]: https://www.bithound.io/github/grantcarthew/node-mppg
