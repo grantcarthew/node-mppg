@@ -84,7 +84,7 @@ See the jsDoc notes in the [index.js](/index.js) file.
 
 I, Grant Carthew, am a technologist, trainer, and Dad from Queensland, Australia. I work on code in a number of personal projects and when the need arises I build my own packages.
 
-This project exists because I needed a to manage materialized paths.
+This project exists because I needed to manage materialized paths.
 
 Everything I do in open source is done in my own time and as a contribution to the open source community.
 
