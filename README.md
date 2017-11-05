@@ -4,10 +4,10 @@ Materialized Path Pattern Generator - Trees in SQL databases
 
 [![bitHound Overall Score][bithound-overall-image]][bithound-overall-url]
 [![bitHound Dependencies][bithound-dep-image]][bithound-dep-url]
-<!-- [![Build Status][travisci-image]][travisci-url] -->
 [![js-standard-style][js-standard-image]][js-standard-url]
 [![NSP Status][nsp-image]][nsp-url]
 [![Patreon Donation][patreon-image]][patreon-url]
+<!-- [![Build Status][travisci-image]][travisci-url] -->
 
 [![NPM][nodei-npm-image]][nodei-npm-url]
 
