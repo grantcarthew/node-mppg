@@ -11,12 +11,14 @@ Materialized Path Pattern Generator - Trees in SQL databases
 
 [![NPM][nodei-npm-image]][nodei-npm-url]
 
-The Materialized Paths pattern is a simple method to store tree or hierarchical data into a flat data store. It stores each tree node as a row in a table. Each row stores as a string the identifiers of the node’s ancestors or path. Although the Materialized Paths pattern requires additional steps of working with strings and regular expressions, the pattern also provides more flexibility in working with the path, such as finding nodes by partial paths.
+The Materialized Paths pattern is a simple method to store tree or hierarchical data into a flat data store. It stores each tree node as a row in a table. Each row stores the identifiers of the node’s ancestors or path as a string. The Materialized Paths pattern requires additional steps of working with strings and regular expressions however `mppg` helps with this. The pattern also provides more flexibility in working with the path, such as finding nodes by partial paths.
 
 ## Installing
 
-Please note that `mppg` is not being transpiled. I have not tested which versions of Node.js the package will work on. Feel free to contribute this information back to the community.
+Please note that `mppg` is being transpiled and includes a pollyfill for `String.padStart` if it is needed.
 
+* Node: v4.7.0 or later.
+* Browser: Not tested however it should work in most browsers.
 ```sh
 npm install mppg
 ```
@@ -54,6 +56,25 @@ console.log(mppg.getParentId(mpath))
 
 console.log(mppg.getChildId(mpath))
 // '00001' <= The last id in the chain.
+```
+
+The following example could be how you would use the path identifiers in a comment:
+
+```js
+
+{
+  id: 12345, // Your database unique id for this comment.
+  mPathId: '00001', // Always a string.
+  mPath: '0005Y0000W00001', // Full path.
+  content: 'Some comment',
+  thumbedUp: null
+}
+
+// Top level parent mPathId: '0005Y'
+// First child mPathId: '0000W'
+// This childs mPathId: '00001'
+// This childs parent path: '0005Y0000W'
+
 ```
 
 ## Rational
