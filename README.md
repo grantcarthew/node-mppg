@@ -58,14 +58,14 @@ console.log(mppg.getChildId(mpath))
 // '00001' <= The last id in the chain.
 ```
 
-The following example could be how you would use the path identifiers in a comment:
+The following example shows a comment with sample path identifiers and materialized path:
 
 ```js
 
 {
   id: 12345, // Your database unique id for this comment.
-  mPathId: '00001', // Always a string.
-  mPath: '0005Y0000W00001', // Full path.
+  mPathId: '00001', // This comments materialized path id.
+  mPath: '0005Y0000W00001', // Full materialized path including two parents.
   content: 'Some comment',
   thumbedUp: null
 }
