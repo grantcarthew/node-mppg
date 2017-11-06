@@ -153,6 +153,7 @@ class MPPG {
    * Replaces null values with empty string.
    * Checks for valid string.
    * Checks for only alphanumeric characters.
+   * Converts to upper case.
    *
    * @param {string} strValue
    * @returns {string}
@@ -248,7 +249,7 @@ class MPPG {
    * @memberof MPPG
    */
   getPathLength (mpath) {
-    this.cleanStr(mpath)
+    mpath = this.cleanStr(mpath)
     this.testPathLength(mpath)
     return mpath.length === 0 ? 0 : mpath.length / this.idLength
   }
@@ -271,6 +272,8 @@ class MPPG {
    * @memberof MPPG
    */
   getNextId (pathId) {
+    pathId = this.cleanStr(pathId)
+    this.is.emptyString(pathId) || this.testPathLength(pathId)
     pathId = pathId ? this.fromBase36(pathId) : 0
     pathId = this.toBase36(++pathId)
     pathId = pathId.padStart(this.idLength, this.minChr)
@@ -286,6 +289,8 @@ class MPPG {
    * @memberof MPPG
    */
   getPreviousId (pathId) {
+    pathId = this.cleanStr(pathId)
+    this.testPathLength(pathId)
     pathId = this.fromBase36(pathId)
     pathId = this.toBase36(--pathId)
     pathId = pathId.padStart(this.idLength, this.minChr)
