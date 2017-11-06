@@ -1,12 +1,13 @@
 {
   "name": "mppg",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Materialized Path Pattern Generator",
   "main": "index.js",
   "scripts": {
     "test": "jest",
     "watch": "jest --watch",
-    "lint": "standard"
+    "lint": "standard",
+    "build": "npm test"
   },
   "repository": {
     "type": "git",

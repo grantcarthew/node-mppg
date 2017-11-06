@@ -4,14 +4,14 @@ Materialized Path Pattern Generator - Trees in SQL databases
 
 [![bitHound Overall Score][bithound-overall-image]][bithound-overall-url]
 [![bitHound Dependencies][bithound-dep-image]][bithound-dep-url]
+[![Build Status][travisci-image]][travisci-url]
 [![js-standard-style][js-standard-image]][js-standard-url]
 [![NSP Status][nsp-image]][nsp-url]
 [![Patreon Donation][patreon-image]][patreon-url]
-<!-- [![Build Status][travisci-image]][travisci-url] -->
 
 [![NPM][nodei-npm-image]][nodei-npm-url]
 
-The Materialized Paths pattern is a simple method to store tree or hierarchical data into a flat data store. It stores each tree node in a table; in addition to the tree node, each row stores as a string the id(s) of the node’s ancestors or path. Although the Materialized Paths pattern requires additional steps of working with strings and regular expressions, the pattern also provides more flexibility in working with the path, such as finding nodes by partial paths.
+The Materialized Paths pattern is a simple method to store tree or hierarchical data into a flat data store. It stores each tree node as a row in a table. Each row stores as a string the identifiers of the node’s ancestors or path. Although the Materialized Paths pattern requires additional steps of working with strings and regular expressions, the pattern also provides more flexibility in working with the path, such as finding nodes by partial paths.
 
 ## Installing
 
@@ -60,17 +60,17 @@ console.log(mppg.getChildId(mpath))
 
 After researching how to store hierarcical data in an SQL database I discovered there are [many different methods](https://stackoverflow.com/questions/4048151/what-are-the-options-for-storing-hierarchical-data-in-a-relational-database) available.
 
-For my project's use case I decided that the Materialized Path, also known as Lineage Column or Path Enumeration, was the best fit. I was surprised to have difficulty finding a Node.js package to help manage the path ids.
+For my project's use case I decided that the Materialized Path, also known as Lineage Column or Path Enumeration, was the best fit. I was surprised to have difficulty finding a Node.js package to help manage the path identifiers.
 
 I wrote this module to help manage the materialized paths based in some part on a [blog article](https://bojanz.wordpress.com/2014/04/25/storing-hierarchical-data-materialized-path/) by Bojan Živanović.
 
-I am not compressing the path ids by removing the leading zeros because disk is cheap and it is easier to read the paths. I may add this feature in the future.
+I am not compressing the path identifiers by removing the leading zeros because disk is cheap and it is easier to read the paths. I may add this feature in the future.
 
 ## Function
 
 The `mppg` package uses Base36 encoding to create the path identifiers. Read more about [Base36 encoding on Wikipedia](https://en.wikipedia.org/wiki/Base36). By using Base36 encoding the path identifiers can support far more nodes than if only using decimal digits. Also, the strings produced by the Base36 encoding will sort in node order straight from the database.
 
-You can control the size of the identifiers used for `mppg` by setting the constructor option `idLength`. Setting the `idLength` value to 3 will produce path ids of `001`. If you set the `idLength` to 6 you will get path identifiers of `000001`.
+You can control the size of the identifiers used for `mppg` by setting the constructor option `idLength`. Setting the `idLength` value to 3 will produce path identifiers similar to `001`. If you set the `idLength` to 6 you will get path identifiers similar to `000001`.
 
 As an example using a `String` or 255 character field in a database, if you set the `idLength` constructor option to five digits, the maximum number of sibling identifiers will be 60,466,175 with a maximum depth of 50. Plenty to support a comment hierarcy or product catalog.
 
@@ -104,6 +104,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
+- v1.0.3 [2017-11-06]: Added string testing to getNextId and getPreviousId.
 - v1.0.2 [2017-11-05]: More documentation updates.
 - v1.0.1 [2017-11-05]: Documentation update. 
 - v1.0.0 [2017-11-05]: Initial release. 
@@ -112,8 +113,8 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 [bithound-overall-url]: https://www.bithound.io/github/grantcarthew/node-mppg
 [bithound-dep-image]: https://www.bithound.io/github/grantcarthew/node-mppg/badges/dependencies.svg
 [bithound-dep-url]: https://www.bithound.io/github/grantcarthew/node-mppg/master/dependencies/npm
-<!-- [travisci-image]: https://travis-ci.org/grantcarthew/node-mppg.svg?branch=master
-[travisci-url]: https://travis-ci.org/grantcarthew/node-mppg -->
+[travisci-image]: https://travis-ci.org/grantcarthew/node-mppg.svg?branch=master
+[travisci-url]: https://travis-ci.org/grantcarthew/node-mppg
 [js-standard-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
 [js-standard-url]: http://standardjs.com/
 [mppg-url]: https://github.com/grantcarthew/node-mppg
