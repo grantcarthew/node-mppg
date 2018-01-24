@@ -1,6 +1,6 @@
 {
   "name": "mppg",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Materialized Path Pattern Generator",
   "engines": {
     "node": ">=4.7.0"

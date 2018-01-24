@@ -125,6 +125,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
+- v1.0.4 [2018-01-24]: Fixed NSP link.
 - v1.0.3 [2017-11-06]: Added string testing to getNextId and getPreviousId.
 - v1.0.2 [2017-11-05]: More documentation updates.
 - v1.0.1 [2017-11-05]: Documentation update. 
@@ -141,8 +142,8 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 [mppg-url]: https://github.com/grantcarthew/node-mppg
 [bithound-code-image]: https://www.bithound.io/github/grantcarthew/node-mppg/badges/code.svg
 [bithound-code-url]: https://www.bithound.io/github/grantcarthew/node-mppg
-[nsp-image]: https://nodesecurity.io/orgs/openjs/projects/3871d340-0ca9-471c-be9a-39df3871262d/badge
-[nsp-url]: https://nodesecurity.io/orgs/openjs/projects/3871d340-0ca9-471c-be9a-39df3871262d
+[nsp-image]: https://nodesecurity.io/orgs/openjs/projects/b34d026a-bb07-4f78-acfb-8e76fc25b422/badge
+[nsp-url]: https://nodesecurity.io/orgs/openjs/projects/b34d026a-bb07-4f78-acfb-8e76fc25b422
 [patreon-image]: https://img.shields.io/badge/patreon-donate-yellow.svg
 [patreon-url]: https://www.patreon.com/grantcarthew
 [nodei-npm-image]: https://nodei.co/npm/mppg.png?downloads=true&downloadRank=true&stars=true
