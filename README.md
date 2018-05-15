@@ -99,7 +99,7 @@ Rather than worry about managing the identifier numbers and converting to Base36
 
 ## API
 
-See the [JSDoc](http://usejsdoc.org/) notes in the [index.js](/index.js) file.
+See the [JSDoc](http://usejsdoc.org/) notes in the [mppg.js](/mppg.js) file.
 
 ## About the Owner
 
