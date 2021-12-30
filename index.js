@@ -1,24 +1,5 @@
 // @ts-check
 
-// padStart pollyfill from MDN
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
-if (!String.prototype.padStart) {
-  String.prototype.padStart = function padStart(targetLength, padString) {
-    // eslint-disable-line no-extend-native
-    targetLength = targetLength >> 0; // floor if number or convert non-number to 0;
-    padString = String(padString || " ");
-    if (this.length > targetLength) {
-      return String(this);
-    } else {
-      targetLength = targetLength - this.length;
-      if (targetLength > padString.length) {
-        padString += padString.repeat(targetLength / padString.length); // append to original to ensure we are longer than needed
-      }
-      return padString.slice(0, targetLength) + String(this);
-    }
-  };
-}
-
 /**
  * Simple type checking class.
  *
@@ -279,7 +260,7 @@ class MPPG {
   getPathLength(mpath) {
     mpath = this.cleanStr(mpath);
     this.testPathLength(mpath);
-    return mpath.length === 0 ? 0 : mpath.length / this.idLength;
+    return mpath.length / this.idLength;
   }
 
   /**
@@ -352,7 +333,6 @@ class MPPG {
   getChildId(mpath) {
     mpath = this.cleanStr(mpath);
     this.testPathLength(mpath);
-    mpath = mpath.length < this.idLength ? this.minId : mpath;
     if (mpath.length === this.idLength) {
       return mpath;
     }
