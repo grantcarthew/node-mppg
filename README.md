@@ -2,11 +2,7 @@
 
 Materialized Path Pattern Generator - Trees in SQL databases
 
-[![bitHound Overall Score][bithound-overall-image]][bithound-overall-url]
-[![bitHound Dependencies][bithound-dep-image]][bithound-dep-url]
-[![Build Status][travisci-image]][travisci-url]
-[![js-standard-style][js-standard-image]][js-standard-url]
-[![NSP Status][nsp-image]][nsp-url]
+[![unit-test](https://github.com/grantcarthew/node-mppg/actions/workflows/unit-test.yaml/badge.svg)][actions]
 [![Patreon Donation][patreon-image]][patreon-url]
 
 [![NPM][nodei-npm-image]][nodei-npm-url]
@@ -132,19 +128,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 - v1.0.1 [2017-11-05]: Documentation update. 
 - v1.0.0 [2017-11-05]: Initial release. 
 
-[bithound-overall-image]: https://www.bithound.io/github/grantcarthew/node-mppg/badges/score.svg
-[bithound-overall-url]: https://www.bithound.io/github/grantcarthew/node-mppg
-[bithound-dep-image]: https://www.bithound.io/github/grantcarthew/node-mppg/badges/dependencies.svg
-[bithound-dep-url]: https://www.bithound.io/github/grantcarthew/node-mppg/master/dependencies/npm
-[travisci-image]: https://travis-ci.org/grantcarthew/node-mppg.svg?branch=master
-[travisci-url]: https://travis-ci.org/grantcarthew/node-mppg
-[js-standard-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
-[js-standard-url]: http://standardjs.com/
 [mppg-url]: https://github.com/grantcarthew/node-mppg
-[bithound-code-image]: https://www.bithound.io/github/grantcarthew/node-mppg/badges/code.svg
-[bithound-code-url]: https://www.bithound.io/github/grantcarthew/node-mppg
-[nsp-image]: https://nodesecurity.io/orgs/openjs/projects/b34d026a-bb07-4f78-acfb-8e76fc25b422/badge
-[nsp-url]: https://nodesecurity.io/orgs/openjs/projects/b34d026a-bb07-4f78-acfb-8e76fc25b422
 [patreon-image]: https://img.shields.io/badge/patreon-donate-yellow.svg
 [patreon-url]: https://www.patreon.com/grantcarthew
 [nodei-npm-image]: https://nodei.co/npm/mppg.png?downloads=true&downloadRank=true&stars=true
