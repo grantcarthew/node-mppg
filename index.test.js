@@ -1,125 +1,144 @@
+const test = require('tape')
 const MPPG = require('./index')
 const mppg = new MPPG({idLength: 5})
 const mgs = mppg.MppgError.messages
 const lastId = 'ZZZZZ'
-const midId = 'X23GP'
-const midp1Id = 'X23GQ'
-const midm1Id = 'X23GO'
+const midRangeId = 'X23GP'
+const midRangePlus1Id = 'X23GQ'
+const midRangeMinus1Id = 'X23GO'
 const firstId = '00001'
 const maxInt = 60466175
 
-test('constructor', () => {
-  /* eslint-disable no-new */
-  expect(() => { new MPPG({idLength: 0}) }).toThrow(mgs.invalidIdLength)
-  expect(() => { new MPPG({idLength: 1}) }).toThrow(mgs.invalidIdLength)
-  /* eslint-enable no-new */
-  expect(new MPPG({idLength: 2})).toBeInstanceOf(MPPG)
-  expect(new MPPG({idLength: 3})).toBeInstanceOf(MPPG)
-  expect(new MPPG({idLength: 4})).toBeInstanceOf(MPPG)
+test('constructor', (t) => {
+  t.plan(5)
+  let regex = /The idLength option must be two or more/
+  t.throws(() => { new MPPG({idLength: 0}) }, regex, 'idLength option set to 0 throws error')
+  t.throws(() => { new MPPG({idLength: 1}) }, regex, 'idLength option set to 1 throws error')
+  t.ok(new MPPG({idLength: 2}) instanceof MPPG, 'idLength option set to 2 creates MPPG instance')
+  t.ok(new MPPG({idLength: 3}) instanceof MPPG, 'idLength option set to 3 creates MPPG instance')
+  t.ok(new MPPG({idLength: 4}) instanceof MPPG, 'idLength option set to 4 creates MPPG instance')
 })
 
-test('cleanStr', () => {
-  expect(() => { mppg.cleanStr('abc#123') }).toThrow(mgs.invalidChr)
-  expect(mppg.cleanStr()).toBe('')
-  expect(mppg.cleanStr(12345)).toBe('12345')
-  expect(mppg.cleanStr('abc12')).toBe('ABC12')
-  expect(mppg.cleanStr('abc123')).toBe('ABC123')
+test('cleanStr', (t) => {
+  t.plan(5)
+  t.throws(() => { mppg.cleanStr('abc#123') }, null ,mgs.invalidChr)
+  t.equal(mppg.cleanStr(), '', 'cleanStr for null returns empty string')
+  t.equal(mppg.cleanStr(12345), '12345', 'cleanStr for 12345 returns 12345')
+  t.equal(mppg.cleanStr('abc12'), 'ABC12', 'cleanStr for abc12 returns ABC12')
+  t.equal(mppg.cleanStr('abc123'), 'ABC123', 'cleanStr for abc123 returns ABC123')
 })
 
-test('cleanInt', () => {
-  // expect(mppg.cleanInt()).toBe(1)
-  expect(mppg.cleanInt(55)).toBe(55)
-  expect(mppg.cleanInt(0)).toBe(0)
-  expect(mppg.cleanInt(-1000)).toBe(1000)
-  expect(mppg.cleanInt('123abc')).toBe(123)
-  expect(mppg.cleanInt(123.456)).toBe(123)
-  expect(() => { mppg.cleanInt('#%4kjd') }).toThrow(mgs.intNan)
+test('cleanInt', (t) => {
+  t.plan(7)
+  t.throws(() => mppg.cleanInt(), /Path id is not a number/, 'Null throws error')
+  t.equal(mppg.cleanInt(55), 55, 'cleanInt for 55 returns 55')
+  t.equal(mppg.cleanInt(0), 0, 'cleanInt for 0 returns 0')
+  t.equal(mppg.cleanInt(-1000), 1000, 'cleanInt for -1000 returns 1000')
+  t.equal(mppg.cleanInt('123abc'), 123, 'cleanInt for 123abc returns 123')
+  t.equal(mppg.cleanInt(123.456), 123, 'cleanInt for 123.456 returns 123')
+  t.throws(() => { mppg.cleanInt('#%4kjd') }, /Path id is not a number/, 'Invalid number throws error')
 })
 
-test('testPathLength', () => {
-  expect(() => { mppg.testPathLength() }).toThrow(mgs.invalidPathLength)
-  expect(() => { mppg.testPathLength('abc') }).toThrow(mgs.invalidPathLength)
-  expect(() => { mppg.testPathLength(firstId) }).not.toThrow()
-  expect(() => { mppg.testPathLength(firstId + 'abc') }).toThrow(mgs.invalidPathLength)
-  expect(() => { mppg.testPathLength(firstId + midId) }).not.toThrow()
-  expect(() => { mppg.testPathLength(firstId + midId + lastId) }).not.toThrow()
-  expect(() => { mppg.testPathLength(firstId + midId + lastId + 'abc') }).toThrow(mgs.invalidPathLength)
+test('testPathLength', (t) => {
+  let regex = /Path length not related to id length/
+  t.plan(7)
+  t.throws(() => { mppg.testPathLength() }, regex, 'Null id throws error')
+  t.throws(() => { mppg.testPathLength('abc') }, regex, 'Invalid string id throws error')
+  t.doesNotThrow(() => { mppg.testPathLength(firstId) }, 'Valid id does not throw error')
+  t.throws(() => { mppg.testPathLength(firstId + 'abc') }, regex, 'Valid id + invalid id throws error')
+  t.doesNotThrow(() => { mppg.testPathLength(firstId + midRangeId) }, 'Parent id + child id does not throw error')
+  t.doesNotThrow(() => { mppg.testPathLength(firstId + midRangeId + lastId) }, 'Parent id + child id + child id does not throw error')
+  t.throws(() => { mppg.testPathLength(firstId + midRangeId + lastId + 'abc') }, 'Parent id + child id + child id + invalid id throws error')
 })
 
-test('testPathHasParent', () => {
-  expect(() => { mppg.testPathHasParent() }).toThrow(mgs.invalidPathLength)
-  expect(mppg.testPathHasParent(firstId)).toBe(false)
-  expect(mppg.testPathHasParent(firstId + firstId)).toBe(true)
-  expect(mppg.testPathHasParent(firstId + firstId + firstId)).toBe(true)
+test('testPathHasParent', (t) => {
+  t.plan(4)
+  t.throws(() => { mppg.testPathHasParent() }, /Path length not related to id length/, 'Null id throws error')
+  t.equal(mppg.testPathHasParent(firstId), false, 'Id with no parent returns false')
+  t.equal(mppg.testPathHasParent(firstId + firstId), true, 'Id with 1 parent returns true')
+  t.equal(mppg.testPathHasParent(firstId + firstId + firstId), true, 'Id with 2 parents returns true')
 })
 
-test('fromBase36', () => {
-  expect(mppg.fromBase36(lastId)).toBe(maxInt)
-  expect(mppg.fromBase36(1)).toBe(1)
+test('fromBase36', (t) => {
+  t.plan(2)
+  t.equal(mppg.fromBase36(lastId), maxInt, 'Largest Base36 id returns max int')
+  t.equal(mppg.fromBase36(1), 1, 'Base36 id of 1 returns 1')
 })
 
-test('toBase36', () => {
-  expect(mppg.toBase36(maxInt)).toBe(lastId)
+test('toBase36', (t) => {
+  t.plan(1)
+  t.equal(mppg.toBase36(maxInt), lastId, 'Max int returns largest Base36 id')
 })
 
-test('getPathLength', () => {
+test('getPathLength', (t) => {
+  let regex = /Path length not related to id length/
+  t.plan(4)
   let pathLength = mppg.getPathLength(firstId + lastId)
-  expect(pathLength).toBe(2)
-  pathLength = mppg.getPathLength(firstId + midId + lastId)
-  expect(pathLength).toBe(3)
-  expect(() => { mppg.getPathLength('123') }).toThrow(mgs.invalidPathLength)
-  expect(() => { mppg.getPathLength('123ABC') }).toThrow(mgs.invalidPathLength)
+  t.equal(pathLength, 2, 'Two part path returns 2')
+  pathLength = mppg.getPathLength(firstId + midRangeId + lastId)
+  t.equal(pathLength, 3, 'Three part path returns 3')
+  t.throws(() => { mppg.getPathLength('123') }, regex, 'Small invalid path throws error')
+  t.throws(() => { mppg.getPathLength('123ABC') }, regex, 'Large invalid path throws error')
 })
 
-test('getRootId', () => {
-  expect(mppg.getRootId()).toBe(firstId)
+test('getRootId', (t) => {
+  t.plan(1)
+  t.equal(mppg.getRootId(), firstId, 'Returns root id or first id')
 })
 
-test('getNextId', () => {
-  expect(mppg.getNextId(firstId)).toBe('00002')
-  expect(mppg.getNextId(midId)).toBe(midp1Id)
-  expect(mppg.getNextId()).toBe(firstId)
-  expect(() => { mppg.getNextId(lastId) }).toThrow(mgs.intMax)
+test('getNextId', (t) => {
+  t.plan(4)
+  t.equal(mppg.getNextId(firstId), '00002', 'First id returns next id')
+  t.equal(mppg.getNextId(midRangeId), midRangePlus1Id, 'Mid-range id returns next child id')
+  t.equal(mppg.getNextId(), firstId, 'Null id returns first id')
+  t.throws(() => { mppg.getNextId(lastId) }, /Path id value is greater than the maximum/, 'Last id throws error')
 })
 
-test('getPreviousId', () => {
-  expect(mppg.getPreviousId('00002')).toBe(firstId)
-  expect(mppg.getPreviousId(midId)).toBe(midm1Id)
-  expect(mppg.getPreviousId(lastId)).toBe('ZZZZY')
-  expect(() => { mppg.getPreviousId(firstId) }).toThrow(mgs.pathIdMin)
+test('getPreviousId', (t) => {
+  t.plan(4)
+  t.equal(mppg.getPreviousId('00002'), firstId, 'Second id returnd first id')
+  t.equal(mppg.getPreviousId(midRangeId), midRangeMinus1Id, 'Second child id returns first child id')
+  t.equal(mppg.getPreviousId(lastId), 'ZZZZY', 'Last id returns second to last id')
+  t.throws(() => { mppg.getPreviousId(firstId) }, /Path id value is zero which is below the starting value of one/ , 'First id throws error')
 })
 
-test('getParentId', () => {
-  expect(mppg.getParentId(firstId + midId + lastId)).toBe(midId)
-  expect(mppg.getParentId(firstId + midId)).toBe(firstId)
-  expect(() => { mppg.getParentId(firstId) }).toThrow(mgs.noParent)
-  expect(() => { mppg.getParentId() }).toThrow(mgs.invalidPathLength)
+test('getParentId', (t) => {
+  t.plan(4)
+  t.equal(mppg.getParentId(firstId + midRangeId + lastId), midRangeId, 'Three x length id returns two x length')
+  t.equal(mppg.getParentId(firstId + midRangeId), firstId, 'Two x length id returns one x length id')
+  t.throws(() => { mppg.getParentId(firstId) }, /Path id does not have a parent/, 'Id with no parent throws error')
+  t.throws(() => { mppg.getParentId() }, /Path length not related to id length/, 'Null path id throws error')
 })
 
-test('getChildId', () => {
-  expect(() => { mppg.getChildId() }).toThrow(mgs.invalidPathLength)
-  expect(mppg.getChildId(firstId)).toBe(firstId)
-  expect(mppg.getChildId(firstId + midId)).toBe(midId)
-  expect(mppg.getChildId(firstId + midId + lastId)).toBe(lastId)
+test('getChildId', (t) => {
+  t.plan(4)
+  t.throws(() => { mppg.getChildId() }, /Path length not related to id length/, 'Null id throws error')
+  t.equal(mppg.getChildId(firstId), firstId, 'Parent id returns parent id')
+  t.equal(mppg.getChildId(firstId + midRangeId), midRangeId, 'Parent + child id returns child id')
+  t.equal(mppg.getChildId(firstId + midRangeId + lastId), lastId, 'Parent + child + child id returns last child id')
 })
 
-test('getParentPath', () => {
-  expect(() => { mppg.getParentPath() }).toThrow(mgs.invalidPathLength)
-  expect(() => { mppg.getParentPath(firstId) }).toThrow(mgs.noParent)
-  expect(mppg.getParentPath(firstId + midId)).toBe(firstId)
-  expect(mppg.getParentPath(firstId + midId + lastId)).toBe(firstId + midId)
+test('getParentPath', (t) => {
+  t.plan(4)
+  t.throws(() => { mppg.getParentPath() }, /Path length not related to id length/, 'Null id throws error')
+  t.throws(() => { mppg.getParentPath(firstId) }, /Path id does not have a parent/, 'Parent id throws error')
+  t.equal(mppg.getParentPath(firstId + midRangeId), firstId, 'Parent and child id returns parent')
+  t.equal(mppg.getParentPath(firstId + midRangeId + lastId), firstId + midRangeId, 'Parent with two children returns parent + first child')
 })
 
-test('getNextSiblingPath', () => {
-  expect(() => { mppg.getNextSibligPath() }).toThrow(mgs.invalidPathLength)
-  expect(mppg.getNextSibligPath(firstId)).toBe('00002')
+test('getNextSiblingPath', (t) => {
+  t.plan(3)
+  t.throws(() => { mppg.getNextSiblingPath() }, /Path length not related to id length/, 'Null id throws error')
+  t.equal(mppg.getNextSiblingPath(firstId), '00002', 'First id returns next sibling id')
+  t.equal(mppg.getNextSiblingPath(firstId + firstId), '0000100002', 'First id returns next sibling id')
 })
 
-test('getNextChildPath', () => {
+test('getNextChildPath', (t) => {
+  t.plan(3)
   let nextChildPath = mppg.getNextChildPath()
-  expect(nextChildPath).toBe(firstId)
-  nextChildPath = mppg.getNextChildPath(midId)
-  expect(nextChildPath).toBe(midId + firstId)
-  nextChildPath = mppg.getNextChildPath(lastId + midId)
-  expect(nextChildPath).toBe(lastId + midId + firstId)
+  t.equal(nextChildPath, firstId, 'Parent id returns first child id')
+  nextChildPath = mppg.getNextChildPath(midRangeId)
+  t.equal(nextChildPath, midRangeId + firstId, 'Middle range id returns mid-range id + new child id')
+  nextChildPath = mppg.getNextChildPath(lastId + midRangeId)
+  t.equal(nextChildPath, lastId + midRangeId + firstId, 'Last id + mid-range id returns last id + mid-range id + new child id')
 })

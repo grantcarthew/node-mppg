@@ -1,17 +1,13 @@
 {
   "name": "mppg",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Materialized Path Pattern Generator",
   "engines": {
     "node": ">=4.7.0"
   },
   "main": "index.js",
   "scripts": {
-    "clean": "del index.js",
-    "test": "jest",
-    "watch": "jest --watch",
-    "lint": "standard",
-    "build": "npm run clean && standard && babel mppg.js --out-file index.js && npm test"
+    "test": "node index.test.js | tap-spec"
   },
   "repository": {
     "type": "git",
@@ -36,16 +32,8 @@
   },
   "homepage": "https://github.com/grantcarthew/node-mppg#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "del-cli": "^1.1.0",
-    "jest": "^21.2.1",
-    "standard": "^10.0.3"
-  },
-  "standard": {
-    "globals": [
-      "test",
-      "expect"
-    ]
+    "del-cli": "^4.0.1",
+    "tap-spec": "^5.0.0",
+    "tape": "^5.4.0"
   }
 }
