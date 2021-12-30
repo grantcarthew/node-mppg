@@ -121,7 +121,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
-- v1.0.4 [2021-12-30]: Fixed method typo and return values for getNextSiblingPath.
+- v1.0.5 [2021-12-30]: Fixed method typo and return values for getNextSiblingPath.
 - v1.0.4 [2018-01-24]: Fixed NSP link.
 - v1.0.3 [2017-11-06]: Added string testing to getNextId and getPreviousId.
 - v1.0.2 [2017-11-05]: More documentation updates.

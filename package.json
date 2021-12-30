@@ -32,7 +32,6 @@
   },
   "homepage": "https://github.com/grantcarthew/node-mppg#readme",
   "devDependencies": {
-    "del-cli": "^4.0.1",
     "tap-spec": "^5.0.0",
     "tape": "^5.4.0"
   }
