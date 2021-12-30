@@ -2,7 +2,7 @@
 
 Materialized Path Pattern Generator - Trees in SQL databases
 
-[![unit-test](https://github.com/grantcarthew/node-mppg/actions/workflows/unit-tests.yaml/badge.svg)](/actions)
+[![unit-test](https://github.com/grantcarthew/node-mppg/actions/workflows/unit-tests.yaml/badge.svg)][actions]
 [![Patreon Donation][patreon-image]][patreon-url]
 
 [![NPM][nodei-npm-image]][nodei-npm-url]
@@ -129,6 +129,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 - v1.0.0 [2017-11-05]: Initial release. 
 
 [mppg-url]: https://github.com/grantcarthew/node-mppg
+[actions-url]: https://github.com/grantcarthew/node-mppg/actions
 [patreon-image]: https://img.shields.io/badge/patreon-donate-yellow.svg
 [patreon-url]: https://www.patreon.com/grantcarthew
 [nodei-npm-image]: https://nodei.co/npm/mppg.png?downloads=true&downloadRank=true&stars=true
