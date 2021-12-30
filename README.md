@@ -11,9 +11,9 @@ The Materialized Paths pattern is a simple method to store tree or hierarchical 
 
 ## Installing
 
-Please note that `mppg` is being transpiled and includes a pollyfill for `String.padStart` if it is needed.
+Please note that `mppg` includes a pollyfill for `String.padStart` if it is needed.
 
-* Node: v4.7.0 or later.
+* Node v12 or later.
 * Browser: Not tested however it should work in most browsers.
 ```sh
 npm install mppg
@@ -95,11 +95,11 @@ Rather than worry about managing the identifier numbers and converting to Base36
 
 ## API
 
-See the [JSDoc](http://usejsdoc.org/) notes in the [mppg.js](/mppg.js) file.
+See the JSDoc notes in the [mppg.js](/mppg.js) file. [About JSDoc](http://usejsdoc.org/) 
 
 ## About the Owner
 
-I, Grant Carthew, am a technologist, trainer, and Dad from Queensland, Australia. I work on code in a number of personal projects and when the need arises I build my own packages.
+I, Grant Carthew, am a technologist from Queensland, Australia. I work on code in a number of personal projects and when the need arises I build my own packages.
 
 This project exists because I needed to manage materialized paths.
 
