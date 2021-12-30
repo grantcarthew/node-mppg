@@ -1,13 +1,13 @@
 {
   "name": "mppg",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Materialized Path Pattern Generator",
   "engines": {
-    "node": ">=4.7.0"
+    "node": ">=12.0"
   },
   "main": "index.js",
   "scripts": {
-    "test": "node index.test.js | tap-spec"
+    "test": "tap index.test.js --reporter=specy --coverage-report=text"
   },
   "repository": {
     "type": "git",
@@ -32,7 +32,6 @@
   },
   "homepage": "https://github.com/grantcarthew/node-mppg#readme",
   "devDependencies": {
-    "tap-spec": "^5.0.0",
-    "tape": "^5.4.0"
+    "tap": "^15.1.5"
   }
 }
