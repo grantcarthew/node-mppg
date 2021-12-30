@@ -120,6 +120,7 @@ See my [other projects on NPM](https://www.npmjs.com/~grantcarthew).
 
 ## Change Log
 
+- v1.0.6 [2021-12-30]: Added code coverage and removed redundant code paths.
 - v1.0.5 [2021-12-30]: Fixed method typo and return values for getNextSiblingPath.
 - v1.0.4 [2018-01-24]: Fixed NSP link.
 - v1.0.3 [2017-11-06]: Added string testing to getNextId and getPreviousId.
