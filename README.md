@@ -7,14 +7,13 @@ Materialized Path Pattern Generator - Trees in SQL databases
 
 [![NPM][nodei-npm-image]][nodei-npm-url]
 
-The Materialized Paths pattern is a simple method to store tree or hierarchical data into a flat data store. It stores each tree node as a row in a table. Each row stores the identifiers of the node’s ancestors or path as a string. The Materialized Paths pattern requires additional steps of working with strings and regular expressions however `mppg` helps with this. The pattern also provides more flexibility in working with the path, such as finding nodes by partial paths.
+The Materialized Paths pattern is a simple method to store tree or hierarchical data into a flat data store. It stores each tree node as a row in a table. Each row stores the identifiers of the node’s ancestors or path as a string. The Materialized Paths pattern requires additional steps of working with strings and regular expressions however, `mppg` helps with this. The pattern also provides more flexibility in working with the path, such as finding nodes by partial paths.
 
 ## Installing
 
-Please note that `mppg` includes a pollyfill for `String.padStart` if it is needed.
-
 * Node v12 or later.
-* Browser: Not tested however it should work in most browsers.
+* Browser: Not tested however, it should work in most browsers.
+
 ```sh
 npm install mppg
 ```
